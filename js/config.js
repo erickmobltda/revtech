@@ -1,7 +1,7 @@
 // Configuration file for REVTECH Auto Parts
 const CONFIG = {
   // WhatsApp Configuration
-  WHATSAPP_NUMBER: '5547991817609', // Replace with actual WhatsApp number
+  WHATSAPP_NUMBER: '5547984293996', // Replace with actual WhatsApp number
   COMPANY_NAME: 'REVTECH REPRESENTAÇÃO',
   
   // Product Display Settings
