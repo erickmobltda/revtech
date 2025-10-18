@@ -1,0 +1,38 @@
+/* Header specific styles */
+.admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-actions .btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* Mobile menu styles */
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
+  
+  .admin-actions {
+    gap: 0.5rem;
+  }
+  
+  .admin-actions .btn {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem;
+  }
+}
