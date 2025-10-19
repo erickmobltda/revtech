@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ProductService } from '../services/productService';
 import { Product, ProductFormData } from '../types/Product';
 import ProductList from '../components/admin/ProductList';
@@ -12,7 +11,6 @@ const AdminDashboard: React.FC = () => {
   const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  // const navigate = useNavigate(); // TODO: Implement navigation if needed
 
   useEffect(() => {
     loadProducts();
