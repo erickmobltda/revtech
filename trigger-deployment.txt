@@ -1,2 +1,0 @@
-This is a temporary file to trigger GitHub Pages deployment.
-This file can be deleted after deployment is successful.
