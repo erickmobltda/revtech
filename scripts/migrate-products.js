@@ -1,4 +1,21 @@
-// Product Data - Embedded for no-server compatibility
+// Load environment variables from .env file
+require('dotenv').config();
+
+const { initializeApp } = require('firebase/app');
+const { getFirestore, collection, addDoc } = require('firebase/firestore');
+const { getAuth, createUserWithEmailAndPassword } = require('firebase/auth');
+
+// Firebase configuration - replace with your actual config
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID
+};
+
+// Product data from the original products-data.js
 const PRODUCTS_DATA = [
   {"code":"TG1025003","name":"LAMPADA 1 POLO 24V 21W BA15S","nomeFornecedor":"","description":"","imageUrl":"","url":""},
   {"code":"SLL-10003","name":"KIT SUPER LED H7 6000K 12V 3200 LUMENS 35W","nomeFornecedor":"","description":"","imageUrl":"","url":""},
@@ -50,3 +67,67 @@ const PRODUCTS_DATA = [
   {"code":"","name":"KIT CONECTORES MACHO/FEMEA/CAPA 2.8/4.8/6.3mm","nomeFornecedor":"","description":"","imageUrl":"","url":""}
 ];
 
+async function migrateProducts() {
+  try {
+    console.log('🚀 Iniciando migração dos produtos...');
+    
+    // Debug: Check if environment variables are loaded
+    console.log('🔍 Verificando configuração Firebase...');
+    console.log('API Key:', process.env.REACT_APP_FIREBASE_API_KEY ? '✅ Carregada' : '❌ Não encontrada');
+    console.log('Project ID:', process.env.REACT_APP_FIREBASE_PROJECT_ID ? '✅ Carregado' : '❌ Não encontrado');
+    
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    
+    // Create admin user
+    console.log('👤 Criando usuário administrador...');
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth, 
+        'admin@revtech.com.br', 
+        'admin123456'
+      );
+      console.log('✅ Usuário administrador criado:', userCredential.user.email);
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('ℹ️ Usuário administrador já existe');
+      } else {
+        throw error;
+      }
+    }
+    
+    // Import products
+    console.log('📦 Importando produtos...');
+    const productsRef = collection(db, 'products');
+    
+    let importedCount = 0;
+    for (const product of PRODUCTS_DATA) {
+      try {
+        await addDoc(productsRef, {
+          ...product,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        });
+        importedCount++;
+        console.log(`✅ Produto importado: ${product.name}`);
+      } catch (error) {
+        console.error(`❌ Erro ao importar produto ${product.name}:`, error);
+      }
+    }
+    
+    console.log(`🎉 Migração concluída! ${importedCount} produtos importados.`);
+    console.log('📧 Credenciais do administrador:');
+    console.log('   Email: admin@revtech.com.br');
+    console.log('   Senha: admin123456');
+    console.log('⚠️  IMPORTANTE: Altere a senha após o primeiro login!');
+    
+  } catch (error) {
+    console.error('❌ Erro durante a migração:', error);
+    process.exit(1);
+  }
+}
+
+// Run migration
+migrateProducts();
