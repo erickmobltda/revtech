@@ -25,7 +25,7 @@ const SearchAndFilters: React.FC<SearchAndFiltersProps> = ({
 
   useEffect(() => {
     // Get unique suppliers from products
-    const uniqueSuppliers = [...new Set(products.map(p => p.nomeFornecedor))];
+    const uniqueSuppliers = Array.from(new Set(products.map(p => p.nomeFornecedor)));
     setSuppliers(uniqueSuppliers.sort());
   }, [products]);
 

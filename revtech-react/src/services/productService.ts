@@ -8,10 +8,7 @@ import {
   deleteDoc, 
   query, 
   orderBy, 
-  where,
-  limit,
-  startAfter,
-  DocumentSnapshot
+  where
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage } from '../firebase/config';
@@ -178,7 +175,7 @@ export class ProductService {
   static async getSuppliers(): Promise<string[]> {
     try {
       const products = await this.getProducts();
-      const suppliers = [...new Set(products.map(p => p.nomeFornecedor))];
+      const suppliers = Array.from(new Set(products.map(p => p.nomeFornecedor)));
       return suppliers.sort();
     } catch (error) {
       console.error('Error getting suppliers:', error);

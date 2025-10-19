@@ -22,7 +22,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
     imageUrl: '',
     url: ''
   });
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [uploading, setUploading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -224,7 +224,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 <button
                   type="button"
                   onClick={() => {
-                    setImageFile(null);
+                    setImageFile(undefined);
                     setImagePreview('');
                   }}
                   className="remove-image"

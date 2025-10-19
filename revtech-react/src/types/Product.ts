@@ -6,6 +6,7 @@ export interface Product {
   description: string;
   imageUrl: string;
   url: string;
+  quantity?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
