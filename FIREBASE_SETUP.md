@@ -10,10 +10,10 @@ The app is currently running with demo Firebase configuration values. This allow
    - Click "Create a project" or "Add project"
    - Follow the setup wizard
 
-2. **Enable Required Services:**
+2. **Enable Required Services (Free Tier):**
    - **Authentication:** Go to Authentication > Sign-in method > Enable Email/Password
    - **Firestore Database:** Go to Firestore Database > Create database > Start in test mode
-   - **Storage:** Go to Storage > Get started > Start in test mode
+   - **⚠️ Skip Storage:** Storage requires a paid plan - we'll use local storage instead
 
 3. **Get Your Configuration:**
    - Go to Project Settings (gear icon) > General tab
@@ -67,11 +67,20 @@ service firebase.storage {
 }
 ```
 
-## Current Demo Mode
-The app will work in demo mode with the current configuration, but:
-- No real authentication
-- No real database storage
-- No real file uploads
-- All data is stored locally in browser
+## Free Tier Features
+With the free tier setup, you get:
+- ✅ **Real Authentication** - User login/logout works
+- ✅ **Real Database** - Products stored in Firestore
+- ⚠️ **Local Image Storage** - Images stored as base64 in browser (not persistent across devices)
+- ✅ **All Core Features** - Cart, products, admin panel work perfectly
 
-To enable full functionality, follow the setup steps above.
+## Limitations of Free Tier
+- Images are stored locally in browser (not shared between devices)
+- Image uploads work but are not persistent across different browsers/devices
+- For production with image sharing, you'd need Firebase Storage (paid plan)
+
+## Alternative: Use External Image URLs
+Instead of uploading images, you can:
+1. Host images on free services like Imgur, Cloudinary, or GitHub
+2. Use the image URL directly in your products
+3. This works perfectly with the free tier!
