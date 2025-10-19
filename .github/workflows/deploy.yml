@@ -2,9 +2,9 @@ name: Deploy React App to GitHub Pages
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, new_version ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, new_version ]
 
 jobs:
   build-and-deploy:
@@ -19,7 +19,6 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: package-lock.json
         
     - name: Install dependencies
       run: npm ci
