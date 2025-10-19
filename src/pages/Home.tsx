@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ProductService } from '../services/productService';
 import { Product } from '../types/Product';
 import ProductGrid from '../components/ProductGrid';
@@ -25,10 +25,6 @@ const Home: React.FC = () => {
     loadProducts();
   }, []);
 
-  useEffect(() => {
-    filterAndSortProducts();
-  }, [products, searchTerm, selectedSupplier, sortBy, filterAndSortProducts]);
-
   const loadProducts = async () => {
     try {
       setLoading(true);
@@ -43,7 +39,7 @@ const Home: React.FC = () => {
     }
   };
 
-  const filterAndSortProducts = () => {
+  const filterAndSortProducts = useCallback(() => {
     let filtered = [...products];
 
     // Apply search filter
@@ -83,7 +79,11 @@ const Home: React.FC = () => {
     }
 
     setFilteredProducts(filtered);
-  };
+  }, [products, searchTerm, selectedSupplier, sortBy]);
+
+  useEffect(() => {
+    filterAndSortProducts();
+  }, [filterAndSortProducts]);
 
   const handleAddToCart = (product: Product) => {
     setCartItems(prev => {
