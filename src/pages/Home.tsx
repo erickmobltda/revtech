@@ -27,7 +27,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     filterAndSortProducts();
-  }, [products, searchTerm, selectedSupplier, sortBy]);
+  }, [products, searchTerm, selectedSupplier, sortBy, filterAndSortProducts]);
 
   const loadProducts = async () => {
     try {

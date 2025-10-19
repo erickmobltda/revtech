@@ -9,8 +9,8 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ user }) => {
-  const [cartCount, setCartCount] = useState(0);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cartCount] = useState(0);
+  const [isCartOpen] = useState(false);
 
   const handleSignOut = async () => {
     try {

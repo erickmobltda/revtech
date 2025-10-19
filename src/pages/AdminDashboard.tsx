@@ -12,7 +12,7 @@ const AdminDashboard: React.FC = () => {
   const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate(); // TODO: Implement navigation if needed
 
   useEffect(() => {
     loadProducts();
