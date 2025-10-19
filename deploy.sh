@@ -3,9 +3,6 @@
 # GitHub Pages Deployment Script for React App
 echo "🚀 Deploying React app to GitHub Pages..."
 
-# Navigate to React app directory
-cd revtech-react
-
 # Install dependencies
 echo "📦 Installing dependencies..."
 npm install
