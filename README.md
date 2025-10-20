@@ -1,5 +1,6 @@
 # REVTECH React App
 
+
 Aplicativo React moderno para REVTECH REPRESENTAÇÃO com integração Firebase e painel administrativo.
 
 ## 🚀 Funcionalidades
