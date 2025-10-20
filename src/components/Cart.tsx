@@ -70,6 +70,8 @@ const Cart: React.FC<CartProps> = ({
                       (target as HTMLImageElement).onerror = null;
                       (target as HTMLImageElement).src = `${process.env.PUBLIC_URL}/images/placeholder.svg`;
                     }}
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="cart-item-info">
                     <div className="cart-item-code">{item.code}</div>
