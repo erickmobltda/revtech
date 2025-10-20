@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/revtech/static/css/main.07dd5dd6.css",
-    "main.js": "/revtech/static/js/main.baf007d4.js",
+    "main.js": "/revtech/static/js/main.927ee49a.js",
     "index.html": "/revtech/index.html",
     "main.07dd5dd6.css.map": "/revtech/static/css/main.07dd5dd6.css.map",
-    "main.baf007d4.js.map": "/revtech/static/js/main.baf007d4.js.map"
+    "main.927ee49a.js.map": "/revtech/static/js/main.927ee49a.js.map"
   },
   "entrypoints": [
     "static/css/main.07dd5dd6.css",
-    "static/js/main.baf007d4.js"
+    "static/js/main.927ee49a.js"
   ]
 }
