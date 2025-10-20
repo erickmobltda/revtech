@@ -30,7 +30,7 @@ const AdminLogin: React.FC = () => {
     <div className="admin-login">
       <div className="login-container">
         <div className="login-header">
-          <img src="/images/logo-revtech.jpeg" alt="REVTECH Logo" className="login-logo" />
+          <img src={`${process.env.PUBLIC_URL}/images/logo-revtech.jpeg`}  alt="REVTECH Logo" className="login-logo" />
           <h1>Admin - REVTECH</h1>
           <p>Faça login para acessar o painel administrativo</p>
         </div>

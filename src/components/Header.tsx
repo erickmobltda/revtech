@@ -26,7 +26,8 @@ const Header: React.FC<HeaderProps> = ({ user, cartCount, onCartOpen }) => {
         <nav className="navbar">
           <div className="logo">
             <Link to="/">
-              <img src="/images/logo-revtech.jpeg" alt="REVTECH Logo" />
+             {/* eslint-disable-next-line */}
+              <img src={`${process.env.PUBLIC_URL}/images/logo-revtech.jpeg`} />
             </Link>
           </div>
           
