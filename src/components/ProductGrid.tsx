@@ -26,12 +26,12 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart }) => {
         <div key={product.id} className="product-card">
           <div className="product-image">
             <img 
-              src={product.imageUrl || '/images/placeholder.svg'} 
+              src={product.imageUrl || `${process.env.PUBLIC_URL}/images/placeholder.svg`} 
               alt={product.name}
               loading="lazy"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = '/images/placeholder.svg';
+              onError={({ currentTarget: target }) => {
+                (target as HTMLImageElement).onerror = null;
+                (target as HTMLImageElement).src = `${process.env.PUBLIC_URL}/images/placeholder.svg`;
               }}
             />
           </div>

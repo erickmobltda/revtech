@@ -99,13 +99,14 @@ const ProductList: React.FC<ProductListProps> = ({
             <div key={product.id} className="table-row">
               <div className="col-image">
                 <img
-                  src={product.imageUrl || '/images/placeholder.svg'}
+                  src={product.imageUrl || `${process.env.PUBLIC_URL}/images/placeholder.svg`}
+                  onError={({ currentTarget: target }) => {
+                    // prevent infinite loop if placeholder is missing
+                    (target as HTMLImageElement).onerror = null;
+                    (target as HTMLImageElement).src = `${process.env.PUBLIC_URL}/images/placeholder.svg`;
+                  }}
                   alt={product.name}
                   className="product-thumb"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = '/images/placeholder.svg';
-                  }}
                 />
               </div>
               <div className="col-code">

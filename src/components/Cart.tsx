@@ -64,11 +64,11 @@ const Cart: React.FC<CartProps> = ({
               {items.map((item) => (
                 <div key={item.id} className="cart-item">
                   <img 
-                    src={item.imageUrl || '/images/placeholder.svg'} 
-                    alt={item.name}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/images/placeholder.svg';
+                    src={item.imageUrl || `${process.env.PUBLIC_URL}/images/placeholder.svg`} 
+                    alt={item.name || 'Imagem do produto'}
+                    onError={({ currentTarget: target }) => {
+                      (target as HTMLImageElement).onerror = null;
+                      (target as HTMLImageElement).src = `${process.env.PUBLIC_URL}/images/placeholder.svg`;
                     }}
                   />
                   <div className="cart-item-info">
