@@ -56,16 +56,10 @@ const AdminDashboard: React.FC = () => {
     try {
       if (editingProduct) {
         // Update existing product
-        await ProductService.updateProduct(editingProduct.id!, {
-          ...productData,
-          imageUrl: productData.imageUrl || editingProduct.imageUrl
-        });
+        await ProductService.updateProduct(editingProduct.id!, productData);
       } else {
         // Create new product
-        await ProductService.createProduct({
-          ...productData,
-          imageUrl: productData.imageUrl || ''
-        });
+        await ProductService.createProduct(productData);
       }
       
       await loadProducts();
