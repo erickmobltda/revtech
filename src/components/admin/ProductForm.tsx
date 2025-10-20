@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Product, ProductFormData } from '../../types/Product';
-import { ProductService } from '../../services/productService';
 import './ProductForm.css';
 
 interface ProductFormProps {

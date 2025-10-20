@@ -7,10 +7,13 @@ import Hero from '../components/Hero';
 import About from '../components/About';
 import Services from '../components/Services';
 import Contact from '../components/Contact';
-import Cart from '../components/Cart';
 import './Home.css';
 
-const Home: React.FC = () => {
+interface HomeProps {
+  onAddToCart: (product: Product) => void;
+}
+
+const Home: React.FC<HomeProps> = ({ onAddToCart }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -18,8 +21,6 @@ const Home: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSupplier, setSelectedSupplier] = useState('all');
   const [sortBy, setSortBy] = useState('');
-  const [cartItems, setCartItems] = useState<Product[]>([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     loadProducts();
@@ -48,7 +49,7 @@ const Home: React.FC = () => {
       filtered = filtered.filter(product =>
         product.code.toLowerCase().includes(term) ||
         product.name.toLowerCase().includes(term) ||
-        product.nomeFornecedor.toLowerCase().includes(term)
+        (product.nomeFornecedor && product.nomeFornecedor.toLowerCase().includes(term))
       );
     }
 
@@ -85,63 +86,6 @@ const Home: React.FC = () => {
     filterAndSortProducts();
   }, [filterAndSortProducts]);
 
-  const handleAddToCart = (product: Product) => {
-    setCartItems(prev => {
-      const existing = prev.find(item => item.id === product.id);
-      if (existing) {
-        return prev.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: (item.quantity || 1) + 1 }
-            : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-  };
-
-  const handleRemoveFromCart = (productId: string) => {
-    setCartItems(prev => prev.filter(item => item.id !== productId));
-  };
-
-  const handleUpdateQuantity = (productId: string, quantity: number) => {
-    if (quantity <= 0) {
-      handleRemoveFromCart(productId);
-      return;
-    }
-    setCartItems(prev =>
-      prev.map(item =>
-        item.id === productId ? { ...item, quantity } : item
-      )
-    );
-  };
-
-  const generateWhatsAppMessage = () => {
-    if (cartItems.length === 0) return '';
-
-    let message = `🛒 *Novo Pedido - REVTECH REPRESENTAÇÃO*\n\n📝 *Produtos:*\n\n`;
-    
-    cartItems.forEach((item, index) => {
-      message += `${index + 1}. *Código:* ${item.code}\n`;
-      message += `   *Nome:* ${item.name}\n`;
-      message += `   *Fornecedor:* ${item.nomeFornecedor}\n`;
-      message += `   *Quantidade:* ${item.quantity || 1}\n\n`;
-    });
-    
-    const totalItems = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
-    message += `---\n📦 *Total de Itens:* ${totalItems}\n\n`;
-    message += `ℹ️ _Pedido gerado automaticamente pelo site_`;
-    
-    return message;
-  };
-
-  const handleSendOrder = () => {
-    const message = generateWhatsAppMessage();
-    if (message) {
-      const encodedMessage = encodeURIComponent(message);
-      const whatsappLink = `https://wa.me/5547984293996?text=${encodedMessage}`;
-      window.open(whatsappLink, '_blank');
-    }
-  };
 
   if (loading) {
     return (
@@ -192,21 +136,12 @@ const Home: React.FC = () => {
 
           <ProductGrid
             products={filteredProducts}
-            onAddToCart={handleAddToCart}
+            onAddToCart={onAddToCart}
           />
         </div>
       </section>
 
       <Contact />
-
-      <Cart
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        items={cartItems}
-        onRemove={handleRemoveFromCart}
-        onUpdateQuantity={handleUpdateQuantity}
-        onSendOrder={handleSendOrder}
-      />
     </div>
   );
 };

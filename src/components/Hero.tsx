@@ -8,7 +8,7 @@ const Hero: React.FC = () => {
         <div className="hero-content">
           <div className="hero-logo-title">
             <div className="hero-logo">
-              <img src="/images/logo-revtech.svg" alt="REVTECH Logo" className="hero-logo-img" />
+              <img src="/images/logo-revtech.jpeg" alt="REVTECH Logo" className="hero-logo-img" />
             </div>
             <h1 className="hero-title">Peças Automotivas de Qualidade</h1>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { } from 'react';
 import { Link } from 'react-router-dom';
 import { User } from 'firebase/auth';
 import { AuthService } from '../services/authService';
@@ -6,11 +6,11 @@ import './Header.css';
 
 interface HeaderProps {
   user: User | null;
+  cartCount: number;
+  onCartOpen: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ user }) => {
-  const [cartCount] = useState(0);
-  const [, setIsCartOpen] = useState(false);
+const Header: React.FC<HeaderProps> = ({ user, cartCount, onCartOpen }) => {
 
   const handleSignOut = async () => {
     try {
@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
         <nav className="navbar">
           <div className="logo">
             <Link to="/">
-              <img src="/images/logo-revtech.svg" alt="REVTECH Logo" />
+              <img src="/images/logo-revtech.jpeg" alt="REVTECH Logo" />
             </Link>
           </div>
           
@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
           <div className="nav-actions">
             <button 
               className="cart-toggle" 
-              onClick={() => setIsCartOpen(true)}
+              onClick={onCartOpen}
               aria-label="Abrir carrinho"
             >
               <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
