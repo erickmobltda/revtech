@@ -31,7 +31,7 @@ function App() {
   }
 
   return (
-    <Router>
+    <Router basename={process.env.NODE_ENV === 'production' ? '/revtech' : '/'}>
       <div className="App">
         <Header user={user} />
         <Routes>
