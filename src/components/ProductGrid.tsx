@@ -20,18 +20,27 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart }) => {
     );
   }
 
+  const PLACEHOLDER = `${process.env.PUBLIC_URL}/images/placeholder.svg`;
+  const normalizeImageUrl = (url?: string) => {
+    if (!url) return PLACEHOLDER;
+    if (/localhost:\d+/.test(url)) return PLACEHOLDER;
+    if (url.endsWith('/images/placeholder.svg')) return PLACEHOLDER;
+    return url;
+  };
+
   return (
     <div className="products-grid">
       {products.map((product) => (
         <div key={product.id} className="product-card">
           <div className="product-image">
             <img 
-              src={product.imageUrl || '/images/placeholder.svg'} 
+              src={normalizeImageUrl(product.imageUrl)} 
               alt={product.name}
               loading="lazy"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = '/images/placeholder.svg';
+              decoding="async"
+              onError={({ currentTarget: target }) => {
+                (target as HTMLImageElement).onerror = null;
+                (target as HTMLImageElement).src = PLACEHOLDER;
               }}
             />
           </div>
