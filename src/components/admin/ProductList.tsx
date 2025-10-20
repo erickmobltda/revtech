@@ -116,7 +116,9 @@ const ProductList: React.FC<ProductListProps> = ({
                 <span className="product-name">{product.name}</span>
               </div>
               <div className="col-supplier">
-                <span className="product-supplier">{product.nomeFornecedor}</span>
+                <span className="product-supplier">
+                  {product.nomeFornecedor || <em>Não especificado</em>}
+                </span>
               </div>
               <div className="col-actions">
                 <button

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Product, ProductFormData } from '../../types/Product';
-import { ProductService } from '../../services/productService';
 import './ProductForm.css';
 
 interface ProductFormProps {
@@ -22,7 +21,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
     imageUrl: '',
     url: ''
   });
-  const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [uploading, setUploading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -57,15 +55,20 @@ const ProductForm: React.FC<ProductFormProps> = ({
     }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+  const handleImageUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    setFormData(prev => ({
+      ...prev,
+      imageUrl: url
+    }));
+    setImagePreview(url);
+    
+    // Clear error when user starts typing
+    if (errors.imageUrl) {
+      setErrors(prev => ({
+        ...prev,
+        imageUrl: ''
+      }));
     }
   };
 
@@ -78,12 +81,23 @@ const ProductForm: React.FC<ProductFormProps> = ({
     if (!formData.name.trim()) {
       newErrors.name = 'Nome é obrigatório';
     }
-    if (!formData.nomeFornecedor.trim()) {
-      newErrors.nomeFornecedor = 'Fornecedor é obrigatório';
+    
+    // Validate image URL format if provided
+    if (formData.imageUrl.trim() && !isValidUrl(formData.imageUrl)) {
+      newErrors.imageUrl = 'URL da imagem deve ser válida';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const isValidUrl = (url: string): boolean => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -95,23 +109,18 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
     try {
       setUploading(true);
+      setErrors({}); // Clear previous errors
       
-      let imageUrl = formData.imageUrl;
-      
-      // Upload new image if provided
-      if (imageFile) {
-        const productId = product?.id || 'temp';
-        imageUrl = await ProductService.uploadProductImage(imageFile, productId);
-      }
-
-      onSave({
+      // Ensure fornecedor is empty string if not provided
+      const productData = {
         ...formData,
-        imageUrl,
-        imageFile
-      });
+        nomeFornecedor: formData.nomeFornecedor.trim() || ''
+      };
+      
+      onSave(productData);
     } catch (error) {
-      console.error('Error uploading image:', error);
-      setErrors({ image: 'Erro ao fazer upload da imagem' });
+      console.error('Error saving product:', error);
+      setErrors({ general: 'Erro ao salvar produto' });
     } finally {
       setUploading(false);
     }
@@ -159,7 +168,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
           </div>
 
           <div className="form-group">
-            <label htmlFor="nomeFornecedor">Fornecedor *</label>
+            <label htmlFor="nomeFornecedor">Fornecedor</label>
             <input
               type="text"
               id="nomeFornecedor"
@@ -200,31 +209,29 @@ const ProductForm: React.FC<ProductFormProps> = ({
           </div>
 
           <div className="form-group full-width">
-            <label htmlFor="image">Imagem do Produto</label>
-            <div className="image-upload">
-              <input
-                type="file"
-                id="image"
-                accept="image/*"
-                onChange={handleImageChange}
-                disabled={uploading}
-                className="file-input"
-              />
-              <label htmlFor="image" className="file-label">
-                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-                {imageFile ? 'Alterar Imagem' : 'Selecionar Imagem'}
-              </label>
-            </div>
+            <label htmlFor="imageUrl">URL da Imagem</label>
+            <input
+              type="url"
+              id="imageUrl"
+              name="imageUrl"
+              value={formData.imageUrl}
+              onChange={handleImageUrlChange}
+              className={errors.imageUrl ? 'error' : ''}
+              placeholder="https://exemplo.com/imagem.jpg"
+              disabled={uploading}
+            />
+            {errors.imageUrl && <span className="error-text">{errors.imageUrl}</span>}
             
             {imagePreview && (
               <div className="image-preview">
-                <img src={imagePreview} alt="Preview" />
+                <img src={imagePreview} alt="Preview" onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }} />
                 <button
                   type="button"
                   onClick={() => {
-                    setImageFile(undefined);
+                    setFormData(prev => ({ ...prev, imageUrl: '' }));
                     setImagePreview('');
                   }}
                   className="remove-image"
@@ -235,10 +242,14 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 </button>
               </div>
             )}
-            
-            {errors.image && <span className="error-text">{errors.image}</span>}
           </div>
         </div>
+
+        {errors.general && (
+          <div className="error-message">
+            {errors.general}
+          </div>
+        )}
 
         <div className="form-actions">
           <button
@@ -263,3 +274,4 @@ const ProductForm: React.FC<ProductFormProps> = ({
 };
 
 export default ProductForm;
+

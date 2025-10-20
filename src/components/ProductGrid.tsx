@@ -47,7 +47,9 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart }) => {
           <div className="product-info">
             <div className="product-code">{product.code}</div>
             <h3 className="product-name">{product.name}</h3>
-            <div className="product-supplier">{product.nomeFornecedor}</div>
+            {product.nomeFornecedor && (
+              <div className="product-supplier">{product.nomeFornecedor}</div>
+            )}
           </div>
           <button 
             className="add-to-cart-btn" 

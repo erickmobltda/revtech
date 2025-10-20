@@ -78,7 +78,7 @@ export class ProductService {
       return allProducts.filter(product => 
         product.code.toLowerCase().includes(term) ||
         product.name.toLowerCase().includes(term) ||
-        product.nomeFornecedor.toLowerCase().includes(term)
+        (product.nomeFornecedor && product.nomeFornecedor.toLowerCase().includes(term))
       );
     } catch (error) {
       console.error('Error searching products:', error);
@@ -127,38 +127,6 @@ export class ProductService {
     }
   }
 
-  // Upload product image (using local storage as fallback)
-  static async uploadProductImage(file: File, productId: string): Promise<string> {
-    try {
-      // Convert file to base64 for local storage
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const base64String = reader.result as string;
-          // Store in localStorage as fallback
-          localStorage.setItem(`product_image_${productId}`, base64String);
-          resolve(base64String);
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      throw error;
-    }
-  }
-
-  // Delete product image (remove from local storage)
-  static async deleteProductImage(imageUrl: string): Promise<void> {
-    try {
-      // For base64 images, we can't really "delete" them from localStorage
-      // This is a limitation of the free tier approach
-      console.log('Image deletion not supported in free tier mode');
-    } catch (error) {
-      console.error('Error deleting image:', error);
-      throw error;
-    }
-  }
 
   // Get products by supplier
   static async getProductsBySupplier(supplier: string): Promise<Product[]> {
@@ -183,7 +151,11 @@ export class ProductService {
   static async getSuppliers(): Promise<string[]> {
     try {
       const products = await this.getProducts();
-      const suppliers = Array.from(new Set(products.map(p => p.nomeFornecedor)));
+      const suppliers = Array.from(new Set(
+        products
+          .map(p => p.nomeFornecedor)
+          .filter(supplier => supplier && supplier.trim() !== '')
+      ));
       return suppliers.sort();
     } catch (error) {
       console.error('Error getting suppliers:', error);

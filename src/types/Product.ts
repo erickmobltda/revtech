@@ -18,5 +18,4 @@ export interface ProductFormData {
   description: string;
   imageUrl: string;
   url: string;
-  imageFile?: File;
 }

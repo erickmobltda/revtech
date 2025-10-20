@@ -19,6 +19,7 @@ const Cart: React.FC<CartProps> = ({
   onUpdateQuantity,
   onSendOrder
 }) => {
+  console.log('Cart component props:', { isOpen, itemsCount: items.length, items });
   const totalItems = items.reduce((sum, item) => sum + (item.quantity || 1), 0);
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
@@ -35,12 +36,10 @@ const Cart: React.FC<CartProps> = ({
     }
   };
 
-  if (!isOpen) return null;
-
   return (
     <>
-      <div className="cart-overlay" onClick={onClose}></div>
-      <div className="cart-panel">
+      <div className={`cart-overlay ${isOpen ? 'active' : ''}`} onClick={onClose}></div>
+      <div className={`cart-panel ${isOpen ? 'active' : ''}`}>
         <div className="cart-header">
           <h3>Meu Carrinho</h3>
           <button className="close-cart" onClick={onClose} aria-label="Fechar carrinho">
@@ -76,7 +75,9 @@ const Cart: React.FC<CartProps> = ({
                   <div className="cart-item-info">
                     <div className="cart-item-code">{item.code}</div>
                     <div className="cart-item-name">{item.name}</div>
-                    <div className="cart-item-supplier">{item.nomeFornecedor}</div>
+                    {item.nomeFornecedor && (
+                      <div className="cart-item-supplier">{item.nomeFornecedor}</div>
+                    )}
                   </div>
                   <div className="cart-item-controls">
                     <div className="quantity-controls">
