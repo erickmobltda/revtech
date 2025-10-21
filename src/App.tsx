@@ -98,7 +98,7 @@ function App() {
   }
 
   return (
-    <Router basename={process.env.NODE_ENV === 'production' ? '/revtech' : '/'}>
+    <Router basename={process.env.NODE_ENV === 'production' ? '/' : '/'}>
       <div className="App">
         <Header 
           user={user} 
