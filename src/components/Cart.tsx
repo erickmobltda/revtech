@@ -20,6 +20,7 @@ const Cart: React.FC<CartProps> = ({
   onSendOrder
 }) => {
   console.log('Cart component props:', { isOpen, itemsCount: items.length, items });
+  console.log('Cart items details:', items.map(item => ({ id: item.id, name: item.name, quantity: item.quantity })));
   const totalItems = items.reduce((sum, item) => sum + (item.quantity || 1), 0);
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
@@ -31,7 +32,7 @@ const Cart: React.FC<CartProps> = ({
   };
 
   const handleClearCart = () => {
-    if (window.confirm('Deseja limpar todos os itens do carrinho?')) {
+    if (window.confirm('Deseja limpar todos os itens do pedido?')) {
       items.forEach(item => onRemove(item.id!));
     }
   };
@@ -41,8 +42,8 @@ const Cart: React.FC<CartProps> = ({
       <div className={`cart-overlay ${isOpen ? 'active' : ''}`} onClick={onClose}></div>
       <div className={`cart-panel ${isOpen ? 'active' : ''}`}>
         <div className="cart-header">
-          <h3>Meu Carrinho</h3>
-          <button className="close-cart" onClick={onClose} aria-label="Fechar carrinho">
+          <h3>Meu Pedido</h3>
+          <button className="close-cart" onClick={onClose} aria-label="Fechar pedido">
             <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -55,7 +56,7 @@ const Cart: React.FC<CartProps> = ({
               <svg width="64" height="64" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
               </svg>
-              <p>Seu carrinho está vazio</p>
+              <p>Seu pedido está vazio</p>
               <small>Adicione produtos para fazer seu pedido</small>
             </div>
           ) : (
@@ -128,7 +129,7 @@ const Cart: React.FC<CartProps> = ({
             </div>
             
             <button className="btn btn-secondary btn-block" onClick={handleClearCart}>
-              Limpar Carrinho
+              Limpar Pedido
             </button>
             
             <button className="btn btn-whatsapp btn-block" onClick={onSendOrder}>

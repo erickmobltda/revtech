@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import Cart from './components/Cart';
+import FloatingCartButton from './components/FloatingCartButton';
 import './App.css';
 
 function App() {
@@ -38,8 +39,7 @@ function App() {
       }
       return [...prev, { ...product, quantity: 1 }];
     });
-    console.log('Opening cart...');
-    setIsCartOpen(true); // Auto-open cart when item is added
+    // Don't auto-open cart anymore - let user decide when to view
   };
 
   const handleRemoveFromCart = (productId: string) => {
@@ -106,7 +106,7 @@ function App() {
           onCartOpen={() => setIsCartOpen(true)}
         />
         <Routes>
-          <Route path="/" element={<Home onAddToCart={handleAddToCart} />} />
+          <Route path="/" element={<Home onAddToCart={handleAddToCart} onRemoveFromCart={handleRemoveFromCart} onUpdateQuantity={handleUpdateQuantity} cartItems={cartItems} />} />
           <Route 
             path="/admin/login" 
             element={user ? <Navigate to="/admin" /> : <AdminLogin />} 
@@ -124,6 +124,12 @@ function App() {
           onRemove={handleRemoveFromCart}
           onUpdateQuantity={handleUpdateQuantity}
           onSendOrder={handleSendOrder}
+        />
+        
+        <FloatingCartButton
+          itemCount={cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0)}
+          onClick={() => setIsCartOpen(true)}
+          isCartOpen={isCartOpen}
         />
       </div>
     </Router>

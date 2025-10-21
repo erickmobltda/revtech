@@ -5,9 +5,12 @@ import './ProductGrid.css';
 interface ProductGridProps {
   products: Product[];
   onAddToCart: (product: Product) => void;
+  onRemoveFromCart?: (productId: string) => void;
+  onUpdateQuantity?: (productId: string, quantity: number) => void;
+  cartItems?: Product[];
 }
 
-const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart }) => {
+const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart, onRemoveFromCart, onUpdateQuantity, cartItems = [] }) => {
   if (products.length === 0) {
     return (
       <div className="no-products">
@@ -26,6 +29,11 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart }) => {
     if (/localhost:\d+/.test(url)) return PLACEHOLDER;
     if (url.endsWith('/images/placeholder.svg')) return PLACEHOLDER;
     return url;
+  };
+
+  const getProductQuantity = (productId: string) => {
+    const cartItem = cartItems.find(item => item.id === productId);
+    return cartItem?.quantity || 0;
   };
 
   return (
@@ -51,16 +59,43 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart }) => {
               <div className="product-supplier">{product.nomeFornecedor}</div>
             )}
           </div>
-          <button 
-            className="add-to-cart-btn" 
-            onClick={() => onAddToCart(product)}
-            aria-label="Adicionar ao carrinho"
-          >
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
-            </svg>
-            <span>Adicionar</span>
-          </button>
+          {getProductQuantity(product.id!) > 0 ? (
+            <div className="quantity-controls">
+              <button 
+                className="qty-btn qty-minus" 
+                onClick={() => {
+                  const currentQty = getProductQuantity(product.id!);
+                  if (currentQty > 1) {
+                    onUpdateQuantity?.(product.id!, currentQty - 1);
+                  } else {
+                    onRemoveFromCart?.(product.id!);
+                  }
+                }}
+                aria-label="Diminuir quantidade"
+              >
+                −
+              </button>
+              <span className="qty-display">{getProductQuantity(product.id!)}</span>
+              <button 
+                className="qty-btn qty-plus" 
+                onClick={() => onAddToCart(product)}
+                aria-label="Aumentar quantidade"
+              >
+                +
+              </button>
+            </div>
+          ) : (
+            <button 
+              className="add-to-cart-btn" 
+              onClick={() => onAddToCart(product)}
+              aria-label="Adicionar ao pedido"
+            >
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              <span>Adicionar</span>
+            </button>
+          )}
         </div>
       ))}
     </div>
