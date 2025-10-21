@@ -100,7 +100,6 @@
 }
 
 .cart-item {
-  display: flex;
   gap: 1rem;
   padding: 1rem;
   background: #f8f9fa;
@@ -225,32 +224,81 @@
   font-size: 1.125rem;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .cart-panel {
-    width: 70vw;
-    right: -70vw;
-  }
+
+  /* --- DESIGN RESPONSIVO (MOBILE) --- */
+  @media (max-width: 768px) {
+    /* No mobile, o overlay se torna um container flex para centralizar o modal */
+    .cart-overlay.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Lógica do Modal Centralizado para o painel do carrinho */
+    .cart-panel {
+      width: 90%; /* Ocupa 90% da largura, deixando margens */
+      max-width: 400px; /* Evita que fique muito largo em tablets na vertical */
+      
+      height: auto; /* Altura se ajusta ao conteúdo */
+      max-height: 80vh; /* Mas não passa de 80% da altura da tela */
+      
+      /* --- Reseta o posicionamento de painel lateral --- */
+      position: relative; /* Para que ele se posicione dentro do overlay flex */
+      right: auto;
+      top: auto;
+      transform: none; /* Remove qualquer transform do estado inativo */
+      transition: transform 0.3s ease, opacity 0.3s ease; /* Transição para aparecer/sumir */
+      
+      /* --- Estética do Modal --- */
+      border-radius: 16px; /* Cantos arredondados */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+      /* Animação de "zoom-in" */
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    
+    .cart-panel.active {
+       /* --- Reseta a posição de "ativo" do painel lateral --- */
+      right: auto; 
+      
+      /* Animação de "zoom-in" para o estado ativo */
+      opacity: 1;
+      transform: scale(1);
+    }
+    
+    /* Adaptações de espaçamento para telas menores */
+    .cart-header, .cart-body, .cart-footer {
+      padding: 1rem;
+    }
+
+    .cart-item img {
+      width: 50px;
+      height: 50px;
+    }
+
+    /* --- NOVOS ESTILOS PARA O LAYOUT DO ITEM DO CARRINHO --- */
+    .cart-item {
+      align-items: flex-start; /* Alinha a imagem e a área de info no topo */
+    }
+    
+    .cart-item-info {
+      /* Transforma a área de info em um container flex vertical */
+      display: flex;
+      flex-direction: column;
+      align-items: stretch; /* Faz os filhos ocuparem a largura total */
+      flex-grow: 1; /* Permite que o container cresça */
+    }
+
+    /* Target para o nome do produto (assumindo que está em um p ou div) */
+    .cart-item-info > p {
+      margin-bottom: 0.75rem; /* Adiciona espaço entre o nome e os controles */
+      text-align: left; /* Garante alinhamento à esquerda */
+    }
+
+    .cart-item-controls {
+      /* Alinha os controles (quantidade, remover) à direita */
+      align-self: flex-end;
+    }
   
-  .cart-item {
-    padding: 0.75rem;
-  }
-  
-  .cart-item img {
-    width: 50px;
-    height: 50px;
-  }
-  
-  .cart-item-controls {
-    flex-direction: row;
-    align-items: center;
-  }
-  
-  .cart-header {
-    padding: 1rem;
-  }
-  
-  .cart-footer {
-    padding: 1rem;
-  }
 }
