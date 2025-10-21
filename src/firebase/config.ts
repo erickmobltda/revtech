@@ -6,9 +6,7 @@ import { getFirestore, Firestore } from 'firebase/firestore';
 // These logs will show us the exact values that are available during the build.
 // In the deployed version, we expect these to be 'undefined'.
 console.log("--- Checking Firebase Environment Variables ---");
-console.log("API Key:", process.env.REACT_APP_FIREBASE_API_KEY);
 console.log("Auth Domain:", process.env.REACT_APP_FIREBASE_AUTH_DOMAIN);
-console.log("Project ID:", process.env.REACT_APP_FIREBASE_PROJECT_ID);
 // --- END DEBUG LOGS ---
 
 
