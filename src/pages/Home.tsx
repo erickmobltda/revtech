@@ -11,9 +11,12 @@ import './Home.css';
 
 interface HomeProps {
   onAddToCart: (product: Product) => void;
+  onRemoveFromCart: (productId: string) => void;
+  onUpdateQuantity: (productId: string, quantity: number) => void;
+  cartItems: Product[];
 }
 
-const Home: React.FC<HomeProps> = ({ onAddToCart }) => {
+const Home: React.FC<HomeProps> = ({ onAddToCart, onRemoveFromCart, onUpdateQuantity, cartItems }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -137,6 +140,9 @@ const Home: React.FC<HomeProps> = ({ onAddToCart }) => {
           <ProductGrid
             products={filteredProducts}
             onAddToCart={onAddToCart}
+            onRemoveFromCart={onRemoveFromCart}
+            onUpdateQuantity={onUpdateQuantity}
+            cartItems={cartItems}
           />
         </div>
       </section>

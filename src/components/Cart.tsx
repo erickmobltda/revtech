@@ -20,6 +20,7 @@ const Cart: React.FC<CartProps> = ({
   onSendOrder
 }) => {
   console.log('Cart component props:', { isOpen, itemsCount: items.length, items });
+  console.log('Cart items details:', items.map(item => ({ id: item.id, name: item.name, quantity: item.quantity })));
   const totalItems = items.reduce((sum, item) => sum + (item.quantity || 1), 0);
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {

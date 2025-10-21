@@ -1,0 +1,93 @@
+/* Floating Cart Button */
+.floating-cart-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  z-index: 100;
+  transition: all 0.3s ease;
+  animation: slideInUp 0.3s ease-out;
+}
+
+.floating-cart-button:hover {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
+}
+
+.floating-cart-button:active {
+  transform: translateY(0);
+}
+
+.cart-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #dc3545;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  border: 2px solid white;
+}
+
+.cart-text {
+  white-space: nowrap;
+}
+
+/* Animation */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .floating-cart-button {
+    bottom: 16px;
+    right: 16px;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  
+  .cart-text {
+    display: none;
+  }
+  
+  .floating-cart-button {
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    justify-content: center;
+  }
+}

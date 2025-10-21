@@ -15,8 +15,8 @@
 .cart-panel {
   position: fixed;
   top: 0;
-  right: -400px;
-  width: 400px;
+  right: -70vw;
+  width: 70vw;
   height: 100vh;
   background: white;
   box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
@@ -228,8 +228,8 @@
 /* Responsive design */
 @media (max-width: 768px) {
   .cart-panel {
-    width: 100vw;
-    right: -100vw;
+    width: 70vw;
+    right: -70vw;
   }
   
   .cart-item {
@@ -244,5 +244,13 @@
   .cart-item-controls {
     flex-direction: row;
     align-items: center;
+  }
+  
+  .cart-header {
+    padding: 1rem;
+  }
+  
+  .cart-footer {
+    padding: 1rem;
   }
 }
